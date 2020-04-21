@@ -116,6 +116,7 @@ int main (int argc, char *argv[])
         fscanf(file,"%lf",&y[i]);
     }
     
+    printf("Data read from file: \n");
     for(int i = 0; i < entries; i++){
         printf("%f %f\n",x[i], y[i]);
     }
@@ -130,7 +131,7 @@ int main (int argc, char *argv[])
     for(int i = 0; i < entries; i ++) b[1] += x[i] * y[i];
     for(int i = 0; i < entries; i ++) b[2] += x[i] * x[i] * y[i];
     
-    printf("b0 = %f\n",b[0]);
+    printf("\nb0 = %f\n",b[0]);
     printf("b1 = %f\n",b[1]);
     printf("b2 = %f\n",b[2]);
 
@@ -170,10 +171,10 @@ int main (int argc, char *argv[])
     double detM1 = getDetSwitch(1, matrix, b);
     double detM2 = getDetSwitch(2, matrix, b);
     
-    printf("detM=%f\n",detM);
-    printf("detM0=%f\n",detM0);
-    printf("detM1=%f\n",detM1);
-    printf("detM2=%f\n\n",detM2);
+    printf("detM = %f\n",detM);
+    printf("detM0 = %f\n",detM0);
+    printf("detM1 = %f\n",detM1);
+    printf("detM2 = %f\n\n",detM2);
 
     a[0] = detM0/detM;
     a[1] = detM1/detM;
@@ -200,7 +201,7 @@ int main (int argc, char *argv[])
  }
  else {
      printf("\033[1;31m"); //red output
-     printf("USAGE: ./app pathToDataFile numberOfEntries [numbersToEvaluate f(X)]\n");
+     printf("USAGE: ./app.exe pathToDataFile numberOfEntries [numbersToEvaluate f(X)]\n");
      printf("\033[0;32m"); //green output
      printf("Ex: ./app.exe infected.dat 6 3 4.5 2.4 9 0\n");
      printf("\033[0m"); //reset to default color
