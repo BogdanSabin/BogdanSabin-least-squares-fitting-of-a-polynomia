@@ -198,8 +198,12 @@ int main (int argc, char *argv[])
     fclose(gnuplotPipe);
 
  }
- else
-     printf("USAGE: ./app pathToDataFile numberOfEntries [numbersToEvaluate]\nEx: ./app.exe infected.dat 6 3 4.5 2.4 9 0\n");
- 
+ else {
+     printf("\033[1;31m"); //red output
+     printf("USAGE: ./app pathToDataFile numberOfEntries [numbersToEvaluate f(X)]\n");
+     printf("\033[0;32m"); //green output
+     printf("Ex: ./app.exe infected.dat 6 3 4.5 2.4 9 0\n");
+     printf("\033[0m"); //reset to default color
+ }
  return 0;
 }
