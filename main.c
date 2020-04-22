@@ -64,7 +64,7 @@ void printFunc(){
     else
         printf("+ %fx ",a[1]);
     
-    if(a[2] < 0)
+    if(a[0] < 0)
         printf("%f",a[0]);
     else
         printf("+ %f ",a[0]);
@@ -201,9 +201,9 @@ int main (int argc, char *argv[])
  }
  else {
      printf("\033[1;31m"); //red output
-     printf("USAGE: ./app.exe pathToDataFile numberOfEntries [numbersToEvaluate f(X)]\n");
+     printf("USAGE: ./app.exe pathToDataFile numberOfEntries numberOfEntriesToEvaluate [numbersToEvaluate f(X)]\n");
      printf("\033[0;32m"); //green output
-     printf("Ex: ./app.exe infected.dat 6 3 4.5 2.4 9 0\n");
+     printf("Ex: ./app.exe infected.dat 6 6 3 4.5 2.4 9 0\n");
      printf("\033[0m"); //reset to default color
  }
  return 0;
