@@ -3,7 +3,7 @@ NC=\033[0m
 GREEN=\033[0;32m
 
 how_to_run: generate
-	@echo -e "${ORANGE}USAGE: ./app.exe pathToDataFile numberOfEntries numberOfEntriesToEvaluate [numbersToEvaluate f(X)]";
+	@echo -e "${ORANGE}USAGE: ./app.exe pathToDataFile numberOfEntriesInFile numbersToEvaluateFromFile [numbersToEvaluateFunction(optional) f(X)]";
 	@echo -e "	${GREEN}=>  ./app.exe ./data/romania.dat 33 33 3 4.5 2.4 9 0${NC}";
 
 generate: main.c

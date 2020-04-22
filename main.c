@@ -82,25 +82,36 @@ void evaluateFunc(double* v, int size){
 
 int main (int argc, char *argv[])
 {
- if(argc >= 3){
-     int entries;
-     sscanf(argv[2], "%d", &entries); //convert to int
+ if(argc >= 4){
      char * path = malloc(strlen(argv[1]) * sizeof(char));
      strcpy(path, argv[1]);
-
+     
+     int entries;
+     sscanf(argv[2], "%d", &entries); //convert to int
+     
+     int numbersToEvaluateFromFile = 0;
+     sscanf(argv[3], "%d", &numbersToEvaluateFromFile); //convert to int
+     if(numbersToEvaluateFromFile < 0 || numbersToEvaluateFromFile > entries){
+        printf("\033[1;31m"); //red output
+        printf("numbersToEvaluateFromFile: %d is invalid min is 0 max is %d\n", numbersToEvaluateFromFile, entries);
+        printf("\033[0m"); //reset to default color
+        exit(-1);
+     }
     
      double* x = malloc(entries * sizeof(double));
      double* y = malloc(entries * sizeof(double));
-     int evaluate  = 0;
+
      double* vals;
-     if(argc > 3){ //have number to evaluate for fuction
-        evaluate = 1;
-        vals = malloc((argc - 3) * sizeof(double));
-        int k = 3; 
-        for(int i = 0; i < argc - 3; i ++)
+     int thereAreCustomNumbersToEvaluate  = 0;
+     if(argc > 4){ //have number to evaluate for fuction
+        thereAreCustomNumbersToEvaluate = 1;
+        int lenght = argc - 4;
+        vals = malloc( lenght * sizeof(double));
+        int k = 4; 
+        for(int i = 0; i < lenght; i ++)
             sscanf(argv[k++], "%lf", &vals[i]); //convert to double
         
-        for(int i = 0; i < argc - 3; i ++) 
+        for(int i = 0; i < lenght; i ++) 
             printf("vals(%d) = %f\n",i, vals[i]);
      } 
 
@@ -127,9 +138,9 @@ int main (int argc, char *argv[])
 
     //compute b
     double b[N];
-    for(int i = 0; i < entries; i ++) b[0] += y[i];
-    for(int i = 0; i < entries; i ++) b[1] += x[i] * y[i];
-    for(int i = 0; i < entries; i ++) b[2] += x[i] * x[i] * y[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) b[0] += y[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) b[1] += x[i] * y[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) b[2] += x[i] * x[i] * y[i];
     
     printf("\nb0 = %f\n",b[0]);
     printf("b1 = %f\n",b[1]);
@@ -145,14 +156,14 @@ int main (int argc, char *argv[])
     double sumXiCube = 0;
     double sumXiTo4 = 0;
 
-    for(int i = 0; i < entries; i ++) sumXi += x[i];
-    for(int i = 0; i < entries; i ++) sumXiSquare += x[i] * x[i];
-    for(int i = 0; i < entries; i ++) sumXiCube += x[i] * x[i] * x[i];
-    for(int i = 0; i < entries; i ++) sumXiTo4 += x[i] * x[i] * x[i] * x[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) sumXi += x[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) sumXiSquare += x[i] * x[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) sumXiCube += x[i] * x[i] * x[i];
+    for(int i = 0; i < numbersToEvaluateFromFile; i ++) sumXiTo4 += x[i] * x[i] * x[i] * x[i];
 
     for (int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            if(i == 0 && j == 0 ) matrix[i][j] = entries;
+            if(i == 0 && j == 0 ) matrix[i][j] = numbersToEvaluateFromFile;
             else
                 if(i == 2 && j == 2) matrix[i][j] = sumXiTo4;
                 else
@@ -185,25 +196,19 @@ int main (int argc, char *argv[])
     printf("a2 = %f\n\n", a[2]);
 
     printFunc();
-    if(evaluate == 0){
+    if(thereAreCustomNumbersToEvaluate == 0){
+        //some default vals
         printf("f(50) = %f\n", func(50));
         printf("f(300)= %f\n", func(300));
     }
     else
-        evaluateFunc(vals, argc - 3);
-    
-
-    FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-    fprintf(gnuplotPipe, "plot %f*x*x+%f*x+%f",a[2], a[1], a[0]);
-    fflush(gnuplotPipe);
-    fclose(gnuplotPipe);
-
+        evaluateFunc(vals, argc - 4);
  }
  else {
      printf("\033[1;31m"); //red output
-     printf("USAGE: ./app.exe pathToDataFile numberOfEntries numberOfEntriesToEvaluate [numbersToEvaluate f(X)]\n");
+     printf("USAGE: ./app.exe pathToDataFile numberOfEntriesInFile numbersToEvaluateFromFile [numbersToEvaluateFunction(optional) f(X)] \n");
      printf("\033[0;32m"); //green output
-     printf("Ex: ./app.exe infected.dat 6 6 3 4.5 2.4 9 0\n");
+     printf("Ex: ./app.exe ./data/infected1.dat 6 6 3 4.5 2.4 9 0\n");
      printf("\033[0m"); //reset to default color
  }
  return 0;
